@@ -1,0 +1,16 @@
+apply plugin: "sonar-runner"
+
+sonarRunner {
+    sonarProperties {
+        // TODO: set "sonar.host.url"
+        property "sonar.host.url", 'http://sonar:9000'
+        // TODO: set "sonar.jdbc.url"
+        property "sonar.jdbc.url", 'jdbc:postgresql://sonar/sonar'
+        // TODO: set "sonar.jdbc.driverClassName"
+        property "sonar.jdbc.driverClassName", 'org.postgresql.Driver'
+        // TODO: set "sonar.jdbc.username"
+        property "sonar.jdbc.username", 'sonar'
+        // TODO: set "sonar.jdbc.password"
+        property "sonar.jdbc.password", 'sonar'
+    }
+}
