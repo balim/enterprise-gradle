@@ -18,7 +18,5 @@ task integrationTest(type: Test) {
     group = 'verification'
     testClassesDir = sourceSets.integrationTest.output.classesDir
     classpath = sourceSets.integrationTest.runtimeClasspath
-    mustRunAfter test
+    reports.html.destination = file("$buildDir/reports/integrationTests")
 }
-
-check.dependsOn integrationTest

@@ -1,6 +1,7 @@
 apply plugin: 'jacoco'
 
 jacocoTestReport {
+    group 'documentation'
     reports {
         xml.enabled false
         csv.enabled false
@@ -13,6 +14,10 @@ task jacocoIntegrationTestReport(type: JacocoReport) {
     executionData integrationTest
 }
 
-jacocoTestReport.group 'documentation'
+task jacocoCombinedTestReport(type: JacocoReport) {
+    group 'documentation'
+    sourceSets sourceSets.main
+    executionData test, integrationTest
+}
 
-[jacocoTestReport, jacocoIntegrationTestReport]*.dependsOn build
+integrationTest.finalizedBy (jacocoIntegrationTestReport, jacocoCombinedTestReport)
