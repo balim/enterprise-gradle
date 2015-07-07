@@ -1,0 +1,102 @@
+buildscript {
+    repositories {
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
+    }
+    dependencies {
+        classpath "com.terrafolio:gradle-jenkins-plugin:1.3.1"
+    }
+}
+
+/**
+ * If you apply a binary plugin from a script plugin, you cannot use the plugin identifier when applying
+ * the plugin. You will need to use the fully-qualified classname. It's a known limitation of Gradle at
+ * the moment.
+ */
+apply plugin: com.terrafolio.gradle.plugins.jenkins.JenkinsPlugin
+
+ext {
+    // TODO: update 'projectKey' to reflect Jira project key
+    projectKey = 'PROJ_KEY'
+    gitUrl = 'https://github.com/willis7/enterprise-gradle.git'
+}
+
+jenkins {
+    servers {
+        // TODO: update server settings to reflect organisation
+        testing {
+            url 'http://jenkins:8080'
+            secure false
+        }
+    }
+
+    jobs {
+/**
+ * JOB 1 - Build and Unit test
+ */
+        "${projectKey}-unit-tests" {
+            server servers.testing
+            dsl {
+                description 'Commit phase - This job is responsible for ensuring the source code compiles and all unit tests pass.'
+                scm {
+                    git(gitUrl)
+                }
+                triggers {
+                    scm('*/15 * * * *')
+                }
+                steps {
+                    gradle('clean check')
+                }
+                publishers {
+                    archiveJunit 'build/test-results/*.xml'
+                    downstreamParameterized {
+                        trigger("${projectKey}-integ-tests") {
+                            gitRevision()
+                        }
+                    }
+                }
+            }
+        }
+/**
+ * JOB 2 - Integration test
+ * Depends On - Success of 'unit-tests'
+ */
+        "${projectKey}-integ-tests" {
+            server servers.testing
+            dsl{
+                description 'Commit phase - Longer running tests which require an environment to test against.'
+                scm {
+                    git(gitUrl)
+                }
+                steps {
+                    gradle('integrationTest')
+                }
+                publishers {
+                    archiveJunit 'build/test-results/*.xml'
+                    downstreamParameterized {
+                        trigger("${projectKey}-code-analysis") {
+                            gitRevision()
+                        }
+                    }
+                }
+            }
+        }
+/**
+ * JOB 3 - Code analysis
+ * Depends On - Success of 'integ-tests'
+ */
+        "${projectKey}-code-analysis" {
+            server servers.testing
+            dsl {
+                description 'Perform a code health check and fail if low quality'
+                scm {
+                    git(gitUrl)
+                }
+                steps {
+                    gradle('sonarRunner')
+                }
+            }
+        }
+    }
+}

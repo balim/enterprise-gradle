@@ -9,7 +9,7 @@ buildscript {
 }
 
 /**
- * f you a apply a binary plugin from a script plugin, you cannot use the plugin identifier when applying
+ * If you apply a binary plugin from a script plugin, you cannot use the plugin identifier when applying
  * the plugin. You will need to use the fully-qualified classname. It's a known limitation of Gradle at
  * the moment.
  */
