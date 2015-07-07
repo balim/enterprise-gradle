@@ -1,23 +1,11 @@
-// In this section you declare repositories and dependencies which are used by the build scripts
-buildscript {
-    repositories {
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'com.bmuschko:gradle-tomcat-plugin:2.0'
-    }
-}
-
 apply plugin: 'war'
 apply plugin: 'idea'
-apply plugin: 'com.bmuschko.tomcat'
 
 // Apply custom plugins to the project
 apply from: 'gradle/jacoco.gradle'
 apply from: 'gradle/integTest.gradle'
 apply from: 'gradle/sonar.gradle'
-
+apply from: 'gradle/tomcat.gradle'
 
 group = 'org.gradle.training'
 
@@ -42,13 +30,4 @@ dependencies {
     testCompile 'junit:junit:4.11'
     testCompile 'org.mockito:mockito-all:1.10.8'
     testCompile "org.springframework:spring-test:${springVersion}"
-
-    def tomcatVersion = '7.0.57'
-    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
-            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
-    tomcat("org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}") {
-        exclude group: 'org.eclipse.jdt.core.compiler', module: 'ecj'
-    }
 }
-
-[tomcatRun, tomcatRunWar]*.contextPath = 'sample-app'

@@ -1,0 +1,27 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+    dependencies {
+        classpath 'com.bmuschko:gradle-tomcat-plugin:2.2.2'
+    }
+}
+
+/**
+ * f you a apply a binary plugin from a script plugin, you cannot use the plugin identifier when applying
+ * the plugin. You will need to use the fully-qualified classname. It's a known limitation of Gradle at
+ * the moment.
+ */
+apply plugin: com.bmuschko.gradle.tomcat.TomcatPlugin
+
+dependencies {
+    def tomcatVersion = '7.0.62'
+    tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}",
+            "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
+}
+
+tomcat {
+    contextPath = 'sample-app'
+}
