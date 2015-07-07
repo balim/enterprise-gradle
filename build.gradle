@@ -2,8 +2,8 @@ apply plugin: 'war'
 apply plugin: 'idea'
 
 // Apply custom plugins to the project
-apply from: 'gradle/jacoco.gradle'
 apply from: 'gradle/integTest.gradle'
+apply from: 'gradle/jacoco.gradle'
 apply from: 'gradle/sonar.gradle'
 apply from: 'gradle/tomcat.gradle'
 

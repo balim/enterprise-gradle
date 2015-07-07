@@ -21,9 +21,4 @@ task integrationTest(type: Test) {
     mustRunAfter test
 }
 
-task jacocoIntegrationTestReport(type: JacocoReport) {
-    sourceSets sourceSets.main
-    executionData integrationTest
-}
-
 check.dependsOn integrationTest

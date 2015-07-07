@@ -4,6 +4,15 @@ jacocoTestReport {
     reports {
         xml.enabled false
         csv.enabled false
-        html.destination "${buildDir}/jacocoHtml"
     }
 }
+
+task jacocoIntegrationTestReport(type: JacocoReport) {
+    group 'documentation'
+    sourceSets sourceSets.main
+    executionData integrationTest
+}
+
+jacocoTestReport.group 'documentation'
+
+[jacocoTestReport, jacocoIntegrationTestReport]*.dependsOn build

@@ -6,4 +6,4 @@ include 'services:webservice'
 */
 
 // TODO: set 'rootProject.name'
-rootProject.name = 'enterprise-gradle'
+rootProject.name = 'sample-app'
