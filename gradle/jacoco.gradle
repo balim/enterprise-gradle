@@ -5,19 +5,24 @@ jacocoTestReport {
     reports {
         xml.enabled false
         csv.enabled false
+        html.destination "${buildDir}/reports/jacoco/testReport"
     }
 }
+
+check.finalizedBy jacocoTestReport
 
 task jacocoIntegrationTestReport(type: JacocoReport) {
     group 'documentation'
     sourceSets sourceSets.main
     executionData integrationTest
+    reports.html.destination "${buildDir}/reports/jacoco/integrationTestReport"
 }
 
 task jacocoCombinedTestReport(type: JacocoReport) {
     group 'documentation'
     sourceSets sourceSets.main
     executionData test, integrationTest
+    reports.html.destination "${buildDir}/reports/jacoco/combinedTestReport"
 }
 
 integrationTest.finalizedBy (jacocoIntegrationTestReport, jacocoCombinedTestReport)
