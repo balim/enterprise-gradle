@@ -62,7 +62,7 @@ jenkins {
  * JOB 2 - Integration test
  * Depends On - Success of 'unit-tests'
  */
-        "${projectKey}-integ-tests" {
+        "${projectKey}-integration-tests" {
             server servers.testing
             dsl{
                 description 'Commit phase - Longer running tests which require an environment to test against.'
