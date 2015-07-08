@@ -16,6 +16,7 @@ This project is a simple, MVC-based web application written in Java. Its main pu
 * Usage of the Gradle Wrapper.
 * Jacoco code coverage reporting.
 * PMD source code analyzer. It finds common programming flaws like unused variables, empty catch blocks, unnecessary object creation, and so forth.
+* Findbugs source code analyzer. Performs quality checks on your project's Java source files.
 * SonarQube integration.
 * Deployment to an embedded [Tomcat](http://tomcat.apache.org/) container for local development.
 
