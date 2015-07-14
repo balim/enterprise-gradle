@@ -17,12 +17,13 @@ This project is a simple, MVC-based web application written in Java. Its main pu
 * Jacoco code coverage reporting.
 * PMD source code analyzer. It finds common programming flaws like unused variables, empty catch blocks, unnecessary object creation, and so forth.
 * Findbugs source code analyzer. Performs quality checks on your project's Java source files.
+* Dependency security checking. Checks dependencies which have been linked to your project for security violations.
 * SonarQube integration.
 * Deployment to an embedded [Tomcat](http://tomcat.apache.org/) container for local development.
 
 ## Running the application
 
-You can directly run your application your local machine. There’s no need to install a Servlet container. In a terminal
+You can run your application on your local machine. There’s no need to install a Servlet container. In a terminal
 window execute the following command from the root level of the project:
 
 **Mac OS X/*nix**

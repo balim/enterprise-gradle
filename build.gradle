@@ -9,8 +9,10 @@ apply from: 'gradle/pmd.gradle'
 apply from: 'gradle/sonar.gradle'
 apply from: 'gradle/tomcat.gradle'
 apply from: 'gradle/jenkins.gradle'
+apply from: 'gradle/depsCheck.gradle'
 
 group = 'org.gradle.training'
+version = 0.1
 
 sourceCompatibility = 1.7
 targetCompatibility = 1.7

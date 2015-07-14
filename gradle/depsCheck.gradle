@@ -1,0 +1,10 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.thoughtworks.tools:dependency-check:0.0.4'
+    }
+}
+
+apply plugin: com.tools.security.plugin.DependencyCheckGradlePlugin
