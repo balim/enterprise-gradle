@@ -43,6 +43,7 @@ jenkins {
                     git(gitUrl)
                 }
                 triggers {
+                    // TODO: set a polling time which best suits the project rhythm
                     scm('*/15 * * * *')
                 }
                 steps {
@@ -51,7 +52,7 @@ jenkins {
                 publishers {
                     archiveJunit 'build/test-results/*.xml'
                     downstreamParameterized {
-                        trigger("${projectKey}-integ-tests") {
+                        trigger("${projectKey}-integration-tests") {
                             gitRevision()
                         }
                     }
@@ -75,7 +76,7 @@ jenkins {
                 publishers {
                     archiveJunit 'build/test-results/*.xml'
                     downstreamParameterized {
-                        trigger("${projectKey}-code-analysis") {
+                        trigger("${projectKey}-code-quality") {
                             gitRevision()
                         }
                     }
@@ -95,6 +96,98 @@ jenkins {
                 }
                 steps {
                     gradle('sonarRunner')
+                }
+                publishers {
+                    downstreamParameterized {
+                        trigger("${projectKey}-publish") {
+                            gitRevision()
+                        }
+                    }
+                }
+            }
+        }
+/**
+ * JOB 4 - Publish
+ * Depends On - Success of 'publish'
+ */
+        "${projectKey}-publish" {
+            server servers.testing
+            dsl {
+                description 'Once all code checks have been preforomed you can publish to Jenkins'
+                scm {
+                    git(gitUrl)
+                }
+                steps {
+                    gradle('publish')
+                }
+                publishers {
+                    downstreamParameterized {
+                        trigger("${projectKey}-deploy-dev") {
+                            gitRevision()
+                        }
+                    }
+                }
+            }
+        }
+/**
+ * JOB 5 - Deploy Development
+ * Depends On - Success of 'publish'
+ */
+        "${projectKey}-deploy-dev" {
+            server servers.testing
+            dsl {
+                description 'Deploy the application to a development environment'
+                scm {
+                    git(gitUrl)
+                }
+                steps {
+                    gradle('deploy -Penv=dev')
+                }
+                publishers {
+                    downstreamParameterized {
+                        trigger("${projectKey}-deploy-st") {
+                            gitRevision()
+                        }
+                    }
+                }
+            }
+        }
+/**
+ * JOB 6 - Deploy System Test
+ * Depends On - Success of 'deploy-dev'
+ */
+        "${projectKey}-deploy-st" {
+            server servers.testing
+            dsl {
+                description 'Deploy the application to a system test environment'
+                scm {
+                    git(gitUrl)
+                }
+                steps {
+                    gradle('deploy -Penv=st')
+                }
+                publishers {
+                    downstreamParameterized {
+                        trigger("${projectKey}-deploy-prd") {
+                            gitRevision()
+                        }
+                    }
+                }
+            }
+        }
+/**
+ * JOB 7 - Deploy Production
+ * Depends On - Success of 'deploy-dev'
+ */
+        "${projectKey}-deploy-dev" {
+            server servers.testing
+            dsl {
+                description 'Deploy the application to a system test environment'
+                scm {
+                    git(gitUrl)
+                }
+                steps {
+                    gradle('deploy -Penv=prd')
                 }
             }
         }
