@@ -177,9 +177,9 @@ jenkins {
         }
 /**
  * JOB 7 - Deploy Production
- * Depends On - Success of 'deploy-dev'
+ * Depends On - Success of 'deploy-st'
  */
-        "${projectKey}-deploy-dev" {
+        "${projectKey}-deploy-prd" {
             server servers.testing
             dsl {
                 description 'Deploy the application to a system test environment'
