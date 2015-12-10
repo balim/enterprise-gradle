@@ -1,16 +1,16 @@
 apply plugin: 'war'
-apply plugin: 'idea'
+
 
 // Apply custom plugins to the project
-
-apply from: 'gradle/integTest.gradle'
-apply from: 'gradle/jacoco.gradle'
-apply from: 'gradle/findbugs.gradle'
-apply from: 'gradle/pmd.gradle'
-apply from: 'gradle/sonar.gradle'
-apply from: 'gradle/tomcat.gradle'
-apply from: 'gradle/jenkins.gradle'
-apply from: 'gradle/depsCheck.gradle'
+apply plugin: 'idea'
+apply from: "${rootDir}/gradle/integTest.gradle"
+apply from: "${rootDir}/gradle/jacoco.gradle"
+apply from: "${rootDir}/gradle/findbugs.gradle"
+apply from: "${rootDir}/gradle/pmd.gradle"
+apply from: "${rootDir}/gradle/sonar.gradle"
+apply from: "${rootDir}/gradle/tomcat.gradle"
+apply from: "${rootDir}/gradle/jenkins.gradle"
+apply from: "${rootDir}/gradle/depsCheck.gradle"
 
 
 group = 'org.gradle.training'
@@ -22,7 +22,7 @@ targetCompatibility = 1.7
 // In this section you declare where to find the dependencies of your project
 repositories {
     // You can declare any Maven/Ivy/file repository here.
-    mavenCentral()
+    jcenter()
 }
 
 // In this section you declare the dependencies for your production and test code
